@@ -21,6 +21,10 @@
         "sourceType": "module"
     },
     "plugins": ["react", "@typescript-eslint"],
+    "globals": {
+        "React": true,
+        "JSX": true
+    },
     "rules": {
         "indent": ["error", 4],
         "quotes": ["error", "single"],

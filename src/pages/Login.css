@@ -1,0 +1,7 @@
+.ant-input {
+    /* @apply text-gray-800; */
+}
+
+.ant-input::placeholder {
+    /* @apply text-gray-500; */
+}
