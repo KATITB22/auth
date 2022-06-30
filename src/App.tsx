@@ -6,6 +6,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import 'antd/dist/antd.less';
 
 function App() {
+    document.title = import.meta.env.VITE_APP_TITLE;
     return (
         <>
             <Suspense fallback={<div>Loading...</div>}>

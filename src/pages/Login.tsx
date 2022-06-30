@@ -1,14 +1,49 @@
-import React from 'react';
 import { Form, Input, Button, Card } from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
 import './Login.css';
+import { toast } from 'react-toastify';
+import AuthService from '../service/auth';
+import { useSearchParams } from 'react-router-dom';
+import { useEffect } from 'react';
+import APIClient from '../utils/api-client';
 
 export const Login = () => {
-    const onFinish = () => {};
+    const [searchParams] = useSearchParams();
+
+    const redirect = () => {
+        const redirect = searchParams.get("redirect");
+        if (redirect) {
+            window.location.href = redirect;
+        } else {
+            window.location.href = import.meta.env.VITE_LANDING_PAGE;
+        }
+    }
+
+    const redirectIfHaveToken: Function = async () => {
+        const token = await APIClient.checkToken(false);
+        if (token) {
+            redirect();
+        }
+    }
+
+    useEffect(() => {
+        redirectIfHaveToken();
+    }, []);
+
+    const onFinish = async (e: any) => {
+        await AuthService.login(e.username, e.password,
+            (response) => {
+                toast.success(`Login Successfull (${response.user.username})`);
+                redirect();
+            },
+            (error) => {
+                toast.error(error.toString());
+            });
+    };
 
     return (
         <div className="flex justify-center items-center h-screen bg-gray-800">
-            <div className="basis-3/4 md:basis-7/12 md:scale-[1.3] lg:scale-[1.3] lg:max-w-lg">
+            <div className="basis-3/4 md:basis-7/12 md:scale-[1.3] lg:max-w-lg">
                 <Card className="bg-gray-200 rounded-lg shadow-lg border-0">
                     <Form
                         initialValues={{
